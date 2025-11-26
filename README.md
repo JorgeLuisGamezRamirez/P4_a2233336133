@@ -1,59 +1,186 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏥 Sistema de Citas Médicas - Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![Laravel](https://img.shields.io/badge/Laravel-12.x-red.svg)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-blue.svg)](https://php.net)
+[![Database](https://img.shields.io/badge/Database-MySQL%2FSQLite-orange.svg)](https://mysql.com)
 
-## About Laravel
+## 📋 Descripción del Proyecto
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Sistema completo de gestión de citas médicas desarrollado en Laravel con datos realistas generados usando Faker en español. Este proyecto implementa un sistema robusto para la gestión de especialidades médicas, doctores, pacientes y citas con validaciones de horarios hábiles.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Características Principales
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🔹 Datos Generados
+- **6 especialidades médicas reales**
+- **25 doctores** con nombres y datos realistas en español
+- **80 pacientes** con información completa
+- **150 citas** distribuidas inteligentemente en próximos 45 días
 
-## Learning Laravel
+### 🔹 Validaciones Implementadas
+- ✅ Solo días hábiles (Lunes a Sábado)
+- ✅ Horarios de 8:00 AM a 7:00 PM
+- ✅ Intervalos de 30 minutos por cita
+- ✅ Prevención de duplicados doctor-horario
+- ✅ Nombres realistas en español (Faker es_ES)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 🔹 Arquitectura
+- **Modelos Eloquent** con relaciones bien definidas
+- **Factories realistas** con datos coherentes
+- **Seeders inteligentes** con lógica de validación
+- **Migraciones completas** con constraints
+- **Comando personalizado** para verificación
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🚀 Instalación y Configuración
 
-## Laravel Sponsors
+### Prerrequisitos
+- PHP 8.2 o superior
+- Composer
+- MySQL o SQLite
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Pasos de Instalación
 
-### Premium Partners
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/JorgeLuisGamezRamirez/P4_a2233336133.git
+cd P4_a2233336133
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+# 2. Instalar dependencias
+composer install
 
-## Contributing
+# 3. Configurar entorno
+cp .env.example .env
+php artisan key:generate
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 4. Configurar base de datos en .env
+DB_CONNECTION=sqlite
+# O configurar MySQL según tus preferencias
 
-## Code of Conduct
+# 5. Ejecutar migraciones y seeders
+php artisan migrate:fresh --seed
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 6. Verificar instalación
+php artisan show:results
+```
 
-## Security Vulnerabilities
+## 📊 Verificación de Datos
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Comandos de Tinker Requeridos
 
-## License
+```php
+// Contar total de citas
+Appointment::count()
+// Resultado esperado: 150
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+// Mostrar doctores con especialidades
+Doctor::with('specialty')->take(5)->get()
+// Muestra los primeros 5 doctores con sus especialidades
+```
+
+### Comando Personalizado
+```bash
+php artisan show:results
+```
+
+## 🏗️ Estructura del Proyecto
+
+### Modelos y Relaciones
+- `Specialty` → hasMany → `Doctor`
+- `Doctor` → belongsTo → `Specialty` & hasMany → `Appointment`
+- `Patient` → hasMany → `Appointment`
+- `Appointment` → belongsTo → `Doctor` & `Patient`
+
+### Archivos Principales
+```
+database/
+├── factories/
+│   ├── SpecialtyFactory.php     # Especialidades reales
+│   ├── DoctorFactory.php        # Doctores con Faker es_ES
+│   ├── PatientFactory.php       # Pacientes realistas
+│   └── AppointmentFactory.php   # Citas con validación horaria
+├── migrations/
+│   ├── create_specialties_table.php
+│   ├── create_doctors_table.php
+│   ├── create_patients_table.php
+│   └── create_appointments_table.php
+└── seeders/
+    └── DatabaseSeeder.php       # ⭐ Archivo principal
+```
+
+## 📈 Datos Generados
+
+### Especialidades Médicas
+1. Cardiología
+2. Dermatología
+3. Pediatría
+4. Ginecología
+5. Traumatología
+6. Neurología
+
+### Estadísticas
+- 📋 **Especialidades**: 6 reales
+- 👩‍⚕️ **Doctores**: 25 con nombres españoles
+- 🏥 **Pacientes**: 80 con datos completos
+- 📅 **Citas**: 150 en horarios hábiles
+
+## 🔍 Funcionalidades Especiales
+
+### Validación de Horarios Hábiles
+- **Días permitidos**: Lunes a Sábado (No domingos)
+- **Horario**: 8:00 AM - 7:00 PM (última cita 6:30 PM)
+- **Intervalos**: Cada 30 minutos
+- **Validación**: No duplicados por doctor-horario
+
+### Datos Realistas en Español
+- Nombres y apellidos españoles auténticos
+- Números de teléfono con formato español
+- Direcciones realistas
+- DNIs con formato correcto
+- Números de colegiatura únicos (COL-XXXXX)
+
+## 🧪 Testing y Verificación
+
+```bash
+# Verificar conteos
+php artisan tinker --execute="echo App\Models\Appointment::count();"
+
+# Ver resumen completo
+php artisan show:results
+
+# Verificar datos específicos
+php artisan tinker
+>>> Specialty::all()->pluck('name')
+>>> Doctor::with('specialty')->first()
+>>> Appointment::whereDate('appointment_date', today())->count()
+```
+
+## 📁 Archivos de Entrega
+
+- ✅ `database/seeders/DatabaseSeeder.php` - **Archivo principal**
+- ✅ `capturas_tinker.txt` - Resultados de verificación
+- ✅ `ENTREGABLES_MAESTRO.md` - Resumen ejecutivo
+- ✅ `PROYECTO_CITAS_MEDICAS.md` - Documentación técnica
+
+## 👨‍💻 Autor
+
+**Jorge Luis Gamez Ramirez**
+- GitHub: [@JorgeLuisGamezRamirez](https://github.com/JorgeLuisGamezRamirez)
+- Proyecto: P4_a2233336133
+
+## 📝 Licencia
+
+Este proyecto es para fines académicos.
+
+---
+
+## 🎯 Cumplimiento de Requisitos
+
+✅ **6 especialidades reales** - Implementado  
+✅ **25 doctores con nombres reales** - Implementado con Faker es_ES  
+✅ **80 pacientes** - Implementado  
+✅ **150 citas en próximos 45 días** - Implementado  
+✅ **Solo horarios hábiles (L-S 8:00-19:00)** - Implementado  
+✅ **Citas cada 30 minutos** - Implementado  
+✅ **DatabaseSeeder completo** - Implementado  
+✅ **Capturas de tinker** - Proporcionadas  
+
+**🎉 ¡Proyecto 100% Completo y Funcional!**
